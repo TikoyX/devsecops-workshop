@@ -75,7 +75,7 @@ jobs:
        uses: actions/checkout@v2
      - name: Run Secrets Detection (GitLeaks)
        run: |
-          curl -sSL -o gitleaks https://github.com/gitleaks/gitleaks/releases/latest download/gitleaks-linux-amd64 && chmod +x gitleaks && mv gitleaks /usr/local/bin/
+          curl -sSL -o gitleaks https://github.com/gitleaks/gitleaks/releases/latest download/gitleaks-linux-amd64.gz.tar && chmod +x gitleaks && mv gitleaks /usr/local/bin/
           gitleaks detect --source . --report-path=gitleaks-report.json || true
       
      - name: Upload GitLeaks Report
