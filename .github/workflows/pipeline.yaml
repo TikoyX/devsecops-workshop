@@ -134,3 +134,38 @@ jobs:
        with:
          name: owasp-zap-report
          path: owasp-zap-report.html
+  gates:
+   runs-on: ubuntu-latest
+   needs: [sca, iac, secrets, sast, dast]
+   steps:
+     - name: Check SCA Report
+       run: |
+        if grep -q "HIGH" dependency-check-report.txt; then
+          echo "High severity dependencies found! Failing the pipeline."
+          exit 1
+        fi
+     - name: Check IaC Security Report
+       run: |
+        if grep -q "FAILED" iac-security-report.txt; then
+          echo "Infrastructure as Code security issues detected! Failing the pipeline."
+          exit 1
+        fi
+     - name: Check Secrets Report
+       run: |
+        if [ -s gitleaks-report.json ]; then
+          echo "Secrets detected in the codebase! Failing the pipeline."
+          exit 1
+        fi
+     - name: Check SAST Report
+       run: |
+        if grep -q "HIGH" bandit-report.html; then
+          echo "Critical vulnerabilities found in code! Failing the pipeline."
+          exit 1
+        fi
+     - name: Check DAST Report
+       run: |
+        if grep -q "WARN" owasp-zap-report.html; then
+          echo "DAST found warnings! Consider fixing."
+          exit 1
+        fi
+
