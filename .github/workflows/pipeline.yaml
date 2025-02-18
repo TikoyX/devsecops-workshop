@@ -26,7 +26,7 @@ jobs:
         with:
           name: dependency-check-report
           path: dependency-check-report.txt
-iac:
+  iac:
    runs-on: ubuntu-latest
    steps:
      - name: Checkout Code
@@ -68,9 +68,9 @@ iac:
          name: iac-security-report
          path: iac-security-report.txt
 
-secrets:
-   runs-on: ubuntu-latest
-   steps:
+  secrets:
+    runs-on: ubuntu-latest
+    steps:
      - name: Checkout Code
        uses: actions/checkout@v2
      - name: Run Secrets Detection (GitLeaks)
